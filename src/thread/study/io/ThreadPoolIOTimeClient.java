@@ -9,12 +9,7 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.util.Scanner;
 
-/**
- * 传统的BIO编程
- * @author Administrator
- *
- */
-public class IOTimeClient {
+public class ThreadPoolIOTimeClient {
 
 	private static int port = 9999;
 

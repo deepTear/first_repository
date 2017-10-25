@@ -9,21 +9,20 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
-/**
- * 传统的BIO编程
- * @author Administrator
- *
- */
-public class IOTimeServer {
+public class ThreadPoolIOTimeServer {
 
 	private static int port = 9999;
 
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws Exception{
 		ServerSocket ssocket = new ServerSocket(port);
+		ThreadPoolExecutor executor = new ThreadPoolExecutor(Runtime.getRuntime().availableProcessors(),10,120,TimeUnit.SECONDS,new ArrayBlockingQueue<Runnable>(10));
 		while(true){
 			final Socket socket = ssocket.accept();
-			new Thread(new Runnable() {
+			executor.execute(new Thread(new Runnable() {
 				@Override
 				public void run() {
 					BufferedReader reader = null;
@@ -53,7 +52,7 @@ public class IOTimeServer {
 						e.printStackTrace();
 					}
 				}
-			}).start();
+			}));
 		}
 	}
 }
